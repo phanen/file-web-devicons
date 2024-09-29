@@ -40,7 +40,7 @@ pub fn handle_input_line(line: &str) -> String {
     let icon = get_icon(
         path,
         &icons::ICONS_BY_FILENAME,
-        &icons::ICONS_BY_FILE_EXTENSION,
+        &icons::ICONS_BY_EXTENSION,
         &icons::DEFAULT_ICON,
     );
     let (r, g, b) = (icon.color_red, icon.color_green, icon.color_blue);

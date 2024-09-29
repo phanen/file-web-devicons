@@ -10,7 +10,7 @@ use std::collections::HashMap;
 pub(crate) static DEFAULT_ICON: Lazy<Icon> = Lazy::new(|| Icon::new("", 0x6D8086));
 
 pub(crate) static ICONS_BY_FILENAME: Lazy<HashMap<&str, Icon>> = Lazy::new(|| {
-    let mut m = HashMap::with_capacity(165);
+    let mut m = HashMap::with_capacity(167);
     m.insert(".SRCINFO", Icon::new("󰣇", 0x0F94D2));
     m.insert(".Xauthority", Icon::new("", 0xE54D18));
     m.insert(".Xresources", Icon::new("", 0xE54D18));
@@ -60,6 +60,7 @@ pub(crate) static ICONS_BY_FILENAME: Lazy<HashMap<&str, Icon>> = Lazy::new(|| {
     m.insert("PrusaSlicer.ini", Icon::new("", 0xEC6B23));
     m.insert("PrusaSlicerGcodeViewer.ini", Icon::new("", 0xEC6B23));
     m.insert("QtProject.conf", Icon::new("", 0x40CD52));
+    m.insert("R", Icon::new("󰟔", 0x2266BA));
     m.insert("_gvimrc", Icon::new("", 0x019833));
     m.insert("_vimrc", Icon::new("", 0x019833));
     m.insert("avif", Icon::new("", 0xA074C4));
@@ -149,6 +150,7 @@ pub(crate) static ICONS_BY_FILENAME: Lazy<HashMap<&str, Icon>> = Lazy::new(|| {
     m.insert("prettier.config.ts", Icon::new("", 0x4285F4));
     m.insert("procfile", Icon::new("", 0xA074C4));
     m.insert("py.typed", Icon::new("", 0xFFBC03));
+    m.insert("r", Icon::new("󰟔", 0x2266BA));
     m.insert("rakefile", Icon::new("", 0x701516));
     m.insert("rmd", Icon::new("", 0x519ABA));
     m.insert("robots.txt", Icon::new("󰚩", 0x5D7096));
@@ -179,13 +181,12 @@ pub(crate) static ICONS_BY_FILENAME: Lazy<HashMap<&str, Icon>> = Lazy::new(|| {
     m
 });
 
-pub(crate) static ICONS_BY_FILE_EXTENSION: Lazy<HashMap<&str, Icon>> = Lazy::new(|| {
-    let mut m = HashMap::with_capacity(437);
+pub(crate) static ICONS_BY_EXTENSION: Lazy<HashMap<&str, Icon>> = Lazy::new(|| {
+    let mut m = HashMap::with_capacity(435);
     m.insert("3gp", Icon::new("", 0xFD971F));
     m.insert("3mf", Icon::new("󰆧", 0x888888));
     m.insert("7z", Icon::new("", 0xECA517));
     m.insert("Dockerfile", Icon::new("󰡨", 0x458EE6));
-    m.insert("R", Icon::new("󰟔", 0x2266BA));
     m.insert("a", Icon::new("", 0xDCDDD6));
     m.insert("aac", Icon::new("", 0x00AFFF));
     m.insert("ai", Icon::new("", 0xCBCB41));
@@ -277,7 +278,6 @@ pub(crate) static ICONS_BY_FILE_EXTENSION: Lazy<HashMap<&str, Icon>> = Lazy::new
     m.insert("dwg", Icon::new("󰻫", 0x839463));
     m.insert("dxf", Icon::new("󰻫", 0x839463));
     m.insert("ebook", Icon::new("", 0xEAB16D));
-    m.insert("ebuild", Icon::new("", 0x4C416E));
     m.insert("edn", Icon::new("", 0x519ABA));
     m.insert("eex", Icon::new("", 0xA074C4));
     m.insert("ejs", Icon::new("", 0xCBCB41));
