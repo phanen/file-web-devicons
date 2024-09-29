@@ -1,0 +1,44 @@
+name: Release binary
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  build-linux:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - target: x86_64-unknown-linux-gnu
+            strip: strip
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+
+      - name: build
+        run: |
+          rustup target add ${{ matrix.target }}
+          cargo build --release
+          ${{ matrix.strip }} ./target/release/file_web_devicon
+          chmod +x ./target/release/file_web_devicon
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: file_web_devicon-${{ matrix.target }}
+          path: ./target/release/file_web_devicon
+
+      - name: Upload binaries to release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: ./target/release/file_web_devicon
+          asset_name: file_web_devicon-${{ matrix.target }}
+          tag: latest
+          overwrite: true
