@@ -2,44 +2,26 @@
 
 set -euo pipefail
 
-SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
 PROJECT_DIR=$(dirname "$SCRIPT_DIR")
+TMP=$(mktemp -d)
+GENERATED_CODE_FILE="$TMP/generated-code.txt"
+RUST_FILE="$PROJECT_DIR/crates/file_web_devicon_lib/src/icons.rs"
+DELIM_PATTERN='\/\/ BEGIN GENERATED CODE'
 
-function main() {
-    local tmp
-    tmp=$(mktemp -d)
+cd "$PROJECT_DIR"
 
-    # Delete temporary dir on exit
-    # shellcheck disable=SC2064
-    trap "rm -rf '$tmp'" EXIT
+# clone devicons
+git submodule update --init
 
-    # Download icons, and patch Lua to export them directly
-    mkdir -p "$tmp/nvim-web-devicons"
-    curl -sSL https://raw.githubusercontent.com/nvim-tree/nvim-web-devicons/master/lua/nvim-web-devicons/icons-default.lua > "$tmp/nvim-web-devicons/icons-default.lua"
-    curl -sSL https://raw.githubusercontent.com/nvim-tree/nvim-web-devicons/master/lua/nvim-web-devicons.lua | \
-        sed 's/return M/M.icons_by_filename = icons_by_filename;M.icons_by_file_extension = icons_by_file_extension;return M/' > "$tmp/nvim-web-devicons.lua"
+LUA_PATH=";$PROJECT_DIR/nvim-web-devicons/lua/?.lua" nvim -l "$SCRIPT_DIR/extract-icons.lua" >"$GENERATED_CODE_FILE"
 
-    # Call our own Lua script to extract the icons, and turn it into Rust code
-    local generated_code_file
-    generated_code_file="$tmp/generated-code.txt"
-    cp "$SCRIPT_DIR/extract-icons.lua" "$tmp/extract-icons.lua"
-    cd "$tmp"
-    lua "extract-icons.lua" > "$generated_code_file"
+echo "$DELIM_PATTERN"
+echo "$GENERATED_CODE_FILE"
+echo "$RUST_FILE"
 
-    # Replace the generated code in the Rust source file
-    local rust_file
-    rust_file="$PROJECT_DIR/crates/file_web_devicon_lib/src/icons.rs"
-    local delimiter_pattern
-    delimiter_pattern='\/\/ BEGIN GENERATED CODE'
+sed -i"" -n -e "1,/$DELIM_PATTERN/ p" -e "/$DELIM_PATTERN/ r $GENERATED_CODE_FILE" "$RUST_FILE"
 
-    sed -i '' -n \
-        -e "1,/$delimiter_pattern/ p" \
-        -e "/$delimiter_pattern/ r $generated_code_file" \
-        "$rust_file"
+cargo fmt --check --all
 
-    cd "$PROJECT_DIR"
-    cargo fmt
-}
-
-main "$@"
-
+# vim: ts=4 et:
