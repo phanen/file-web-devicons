@@ -20,7 +20,7 @@ echo "$DELIM_PATTERN"
 echo "$GENERATED_CODE_FILE"
 echo "$RUST_FILE"
 
-sed -i"" -n -e "1,/$DELIM_PATTERN/ p" -e "/$DELIM_PATTERN/ r $GENERATED_CODE_FILE" "$RUST_FILE"
+sed -i.bak -n -e "1,/$DELIM_PATTERN/ p" -e "/$DELIM_PATTERN/ r $GENERATED_CODE_FILE" "$RUST_FILE"
 
 cargo fmt --check --all
 
