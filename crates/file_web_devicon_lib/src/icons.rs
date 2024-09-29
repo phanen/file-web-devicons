@@ -80,7 +80,7 @@ pub(crate) static ICONS_BY_FILENAME: Lazy<HashMap<&str, Icon>> = Lazy::new(|| {
     m
 });
 
-pub(crate) static ICONS_BY_FILE_EXTENSION: Lazy<HashMap<&str, Icon>> = Lazy::new(|| {
+pub(crate) static ICONS_BY_EXTENSION: Lazy<HashMap<&str, Icon>> = Lazy::new(|| {
     let mut m = HashMap::with_capacity(266);
     m.insert("Dockerfile", Icon::new("󰡨", 0x458EE6));
     m.insert("R", Icon::new("󰟔", 0x2266BA));

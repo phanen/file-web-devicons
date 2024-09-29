@@ -13,7 +13,7 @@ fn matches_by_filename() {
             get_icon(
                 path,
                 icons_by_filename,
-                &icons::ICONS_BY_FILE_EXTENSION,
+                &icons::ICONS_BY_EXTENSION,
                 &icons::DEFAULT_ICON
             ),
             v
@@ -23,7 +23,7 @@ fn matches_by_filename() {
 
 #[test]
 fn matches_by_extension() {
-    let icons_by_extension = &icons::ICONS_BY_FILE_EXTENSION;
+    let icons_by_extension = &icons::ICONS_BY_EXTENSION;
     for (k, v) in icons_by_extension.iter() {
         let path = format!("/usr/local/project/filename.{k}");
         let path = Path::new(&path);
@@ -48,7 +48,7 @@ fn falls_back_to_default_icon() {
         get_icon(
             Path::new("/usr/local/project/madeup.extensionzzz"),
             &icons::ICONS_BY_FILENAME,
-            &icons::ICONS_BY_FILE_EXTENSION,
+            &icons::ICONS_BY_EXTENSION,
             &icons::DEFAULT_ICON
         ),
         &*icons::DEFAULT_ICON,
