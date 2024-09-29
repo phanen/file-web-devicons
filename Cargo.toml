@@ -1,6 +1,9 @@
 [workspace]
-members = [
-    "crates/file_web_devicon",
-    "crates/file_web_devicon_lib"
-]
+members = ["crates/file_web_devicon", "crates/file_web_devicon_lib"]
 resolver = "2"
+
+[profile.release]
+codegen-units = 1
+lto = true
+panic = "abort"
+strip = true
