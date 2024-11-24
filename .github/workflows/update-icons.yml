@@ -34,4 +34,4 @@ jobs:
         with:
           title: "chore(icons): auto updates"
           body: "Update devicons."
-          branch: "main"
+          branch: "update-icons"
