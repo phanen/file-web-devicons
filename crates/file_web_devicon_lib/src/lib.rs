@@ -1,6 +1,7 @@
 use std::{collections::HashMap, path::Path};
 
 use filepaths::extract_filepath;
+use mlua::prelude::*;
 
 pub(crate) mod filepaths;
 pub(crate) mod icons;
@@ -80,4 +81,27 @@ pub fn get_icon<'a>(
     }
 
     default_icon
+}
+
+pub fn get(_: &Lua, path: String) -> LuaResult<String> {
+    let non_breaking_space = '\u{2002}';
+    // let path = extract_filepath(text);
+    let icon = get_icon(
+        Path::new(&path),
+        &icons::ICONS_BY_FILENAME,
+        &icons::ICONS_BY_EXTENSION,
+        &icons::DEFAULT_ICON,
+    );
+    let (r, g, b) = (icon.color_red, icon.color_green, icon.color_blue);
+    let icon = icon.icon;
+    Ok(format!(
+        "\x1b[38;2;{r};{g};{b}m{icon}\x1b[0m{non_breaking_space}{path}"
+    ))
+}
+
+#[mlua::lua_module(skip_memory_check)]
+fn file_web_devicons_lib(lua: &Lua) -> LuaResult<LuaTable> {
+    let exports = lua.create_table()?;
+    exports.set("get", lua.create_function(get)?)?;
+    Ok(exports)
 }
