@@ -47,3 +47,16 @@ vim.keymap.set('n', '<C-s>', fzf_live_grep)
 
 _Note_: This project has been tested only on MacOS. I don't know whether it will
 work on Windows, Linux, or e.g. with non-UTF8 path inputs.
+
+## perfomance
+```
+$ hyperfine -w 5 'fd . ~/b/linux | file_web_devicon'
+Benchmark 1: fd . ~/b/linux | file_web_devicon
+  Time (mean ± σ):      77.2 ms ±   2.9 ms    [User: 255.6 ms, System: 74.5 ms]
+  Range (min … max):    71.0 ms …  83.1 ms    37 runs
+
+$ hyperfine -w 5 'scripts/headless_fd.sh -c ~/b/linux'
+Benchmark 1: scripts/headless_fd.sh -c ~/b/linux
+  Time (mean ± σ):     214.8 ms ±   3.7 ms    [User: 464.1 ms, System: 75.5 ms]
+  Range (min … max):   210.5 ms … 222.2 ms    13 runs
+```
