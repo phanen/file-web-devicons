@@ -20,6 +20,8 @@ jobs:
 
       - name: Update icons
         run: |
+          git submodule update --recursive --remote
+          git add .
           bash ./scripts/update-icons.sh
 
       - name: Create commits
